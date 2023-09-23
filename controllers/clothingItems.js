@@ -2,52 +2,42 @@ const clothingItems = require("../models/clothingItem");
 const { OK, CREATED } = require("../utils/errors");
 const { handleItemHttpError } = require("../utils/errorHandlers");
 
-const createItem = (req, res) => {
-  const { name, weather, imageUrl } = req.body;
-  console.log(name, weather, imageUrl);
+function getItems(req, res) {
   clothingItems
-    .create({ name, weather, imageUrl })
+    .find({})
+    .then((items) => {
+      res.status(OK).send(items);
+    })
+    .catch((err) => {
+      handleItemHttpError(req, res, err);
+    });
+}
+
+function createItem(req, res) {
+  const { name, weather, imageUrl } = req.body;
+  const owner = req.user._id;
+
+  clothingItems
+    .create({ name, weather, imageUrl, owner })
     .then((item) => {
       res.status(CREATED).send({ data: item });
     })
     .catch((err) => {
       handleItemHttpError(req, res, err);
     });
-};
+}
 
-const getItems = (req, res) => {
+function deleteItem(req, res) {
   clothingItems
-    .find({})
-    .then((items) => res.status(OK).send(items))
-    .catch((err) => {
-      handleItemHttpError(req, res, err);
-    });
-};
-
-const updateItem = (req, res) => {
-  const { itemId } = req.params;
-  const { imageURL } = req.body;
-
-  clothingItems
-    .findByIdAndUpdate(itemId, { $set: { imageURL } })
+    .findByIdAndRemove(req.params.itemId)
     .orFail()
-    .then((item) => res.status(OK).send({ data: item }))
+    .then((item) => {
+      res.status(OK).send(item);
+    })
     .catch((err) => {
       handleItemHttpError(req, res, err);
     });
-};
-
-const deleteItem = (req, res) => {
-  const { itemId } = req.params;
-
-  clothingItems
-    .findByIdAndDelete(itemId)
-    .orFail()
-    .then((item) => res.status(OK).send(item))
-    .catch((err) => {
-      handleItemHttpError(req, res, err);
-    });
-};
+}
 
 function likeItem(req, res) {
   clothingItems
@@ -84,7 +74,6 @@ function dislikeItem(req, res) {
 module.exports = {
   createItem,
   getItems,
-  updateItem,
   deleteItem,
   likeItem,
   dislikeItem,
