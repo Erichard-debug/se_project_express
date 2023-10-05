@@ -4,6 +4,7 @@ const INTERNAL_SERVER_ERROR = 500;
 const OK = 200;
 const CREATED = 201;
 const NO_CONTENT = 204;
+const UNAUTHORIZED = 401;
 
 module.exports = {
   NOT_FOUND,
@@ -12,4 +13,5 @@ module.exports = {
   OK,
   CREATED,
   NO_CONTENT,
+  UNAUTHORIZED,
 };
