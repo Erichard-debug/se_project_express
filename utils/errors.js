@@ -5,6 +5,7 @@ const OK = 200;
 const CREATED = 201;
 const NO_CONTENT = 204;
 const UNAUTHORIZED = 401;
+const CONFLICT = 409;
 
 module.exports = {
   NOT_FOUND,
@@ -14,4 +15,5 @@ module.exports = {
   CREATED,
   NO_CONTENT,
   UNAUTHORIZED,
+  CONFLICT,
 };

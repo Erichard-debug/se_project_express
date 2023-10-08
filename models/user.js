@@ -24,7 +24,9 @@ const user = new mongoose.Schema({
     unique: true,
     required: true,
     validate: {
-      validator: (v) => isEmail(v),
+      validator(value) {
+        return validator.isEmail(value);
+      },
       message: "Wrong email format",
     },
   },
@@ -32,7 +34,6 @@ const user = new mongoose.Schema({
     type: String,
     required: true,
     select: false,
-    minlength: 8,
   },
 });
 

@@ -12,7 +12,7 @@ const {
 router.post("/", authorize, createItem);
 router.get("/", getItems);
 router.delete("/:itemId", authorize, deleteItem);
-router.put("/:itemId/likes", likeItem);
+router.put("/:itemId/likes", authorize, likeItem);
 router.delete("/:itemId/likes", authorize, dislikeItem);
 
 module.exports = router;

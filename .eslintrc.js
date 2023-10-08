@@ -18,6 +18,7 @@ module.exports = {
   ],
   parserOptions: {
     ecmaVersion: "latest",
+    sourceType: "module",
   },
   rules: {
     "no-underscore-dangle": ["error", { allow: ["_id"] }],

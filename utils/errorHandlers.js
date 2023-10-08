@@ -2,7 +2,7 @@ const {
   NOT_FOUND,
   BAD_REQUEST,
   INTERNAL_SERVER_ERROR,
-  UNAUTHORIZED,
+  // UNAUTHORIZED,
 } = require("./errors");
 
 function handleUserHttpError(req, res, err) {
@@ -45,9 +45,9 @@ function handleItemHttpError(req, res, err) {
         .status(BAD_REQUEST)
         .send({ message: "id is incorrect format, or information is missing" });
       break;
-    case "Unauthorized":
-      res.status(UNAUTHORIZED).send({ message: "Request is unauthorized" });
-      break;
+    // case "Unauthorized":
+    //   res.status(UNAUTHORIZED).send({ message: "Request is unauthorized" });
+    //   break;
     default:
       res
         .status(INTERNAL_SERVER_ERROR)

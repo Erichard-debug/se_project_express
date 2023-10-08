@@ -1,7 +1,16 @@
-const User = require("../models/user");
-const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { OK, UNAUTHORIZED, CREATED } = require("../utils/errors");
+const bcrypt = require("bcryptjs");
+
+const User = require("../models/user");
+
+const {
+  OK,
+  UNAUTHORIZED,
+  CREATED,
+  BAD_REQUEST,
+  CONFLICT,
+  INTERNAL_SERVER_ERROR,
+} = require("../utils/errors");
 const { handleUserHttpError } = require("../utils/errorHandlers");
 const { JWT_SECRET } = require("../utils/config");
 
@@ -28,7 +37,7 @@ function createUser(req, res) {
   const { name, avatar, email, password } = req.body;
 
   if (!email) {
-    res.status(400).send({ message: "Please include an email" });
+    res.status(BAD_REQUEST).send({ message: "Please include an email" });
     return;
   }
 
@@ -36,7 +45,7 @@ function createUser(req, res) {
     .then((user) => {
       if (user) {
         const error = new Error("a user with that email already exists.");
-        error.statusCode = 409;
+        error.statusCode = CONFLICT;
         return Promise.reject(error);
       }
 
@@ -57,32 +66,32 @@ function createUser(req, res) {
     .catch((err) => {
       console.error(err);
       res
-        .status(err.statusCode || 500)
+        .status(err.statusCode || INTERNAL_SERVER_ERROR)
         .send({ message: err.message || "Internal server error" });
     });
 }
 
-function getUsers(req, res) {
-  User.findById(req.params.id)
-    .orFail()
-    .then((users) => {
-      res.status(OK).send(users);
-    })
-    .catch((err) => {
-      handleUserHttpError(req, res, err);
-    });
-}
+// function getUsers(req, res) {
+//   User.findById(req.params.id)
+//     .orFail()
+//     .then((users) => {
+//       res.status(OK).send(users);
+//     })
+//     .catch((err) => {
+//       handleUserHttpError(req, res, err);
+//     });
+// }
 
-function getUser(req, res) {
-  User.findById(req.params.id)
-    .orFail()
-    .then((user) => {
-      res.status(OK).send(user);
-    })
-    .catch((err) => {
-      handleUserHttpError(req, res, err);
-    });
-}
+// function getUser(req, res) {
+//   User.findById(req.params.id)
+//     .orFail()
+//     .then((user) => {
+//       res.status(OK).send(user);
+//     })
+//     .catch((err) => {
+//       handleUserHttpError(req, res, err);
+//     });
+// }
 function getCurrentUser(req, res) {
   User.findById(req.user._id)
     .orFail()
@@ -95,7 +104,7 @@ function getCurrentUser(req, res) {
 }
 
 function updateProfile(req, res) {
-  User.findOneAndUpdate(req.user._id, req.body, {
+  User.findOneAndUpdate({ _id: req.user._id }, req.body, {
     new: true,
     runValidators: true,
   })
@@ -110,8 +119,8 @@ function updateProfile(req, res) {
 
 module.exports = {
   createUser,
-  getUsers,
-  getUser,
+  // getUsers,
+  // getUser,
   login,
   getCurrentUser,
   updateProfile,
