@@ -19,7 +19,7 @@ function login(req, res) {
   User.findUserByCredentials(email, password)
     .then((user) => {
       if (!user) {
-        return Promise.reject(new Error("incorrect username or password"));
+        throw new Error("incorrect username or password");
       }
 
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
@@ -42,11 +42,11 @@ function createUser(req, res) {
   }
 
   User.findOne({ email })
-    .then((user) => {
-      if (user) {
+    .then((existingUser) => {
+      if (existingUser) {
         const error = new Error("a user with that email already exists.");
         error.statusCode = CONFLICT;
-        return Promise.reject(error);
+        throw error;
       }
 
       bcrypt.hash(password, 10).then((hash) => {

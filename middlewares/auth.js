@@ -6,10 +6,9 @@ function authorize(req, res, next) {
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith("Bearer ")) {
-    res
+    return res
       .status(UNAUTHORIZED)
       .send({ message: "Authorization required at startswithBearer" });
-    return;
   }
 
   const token = authorization.replace("Bearer ", "");
@@ -23,7 +22,7 @@ function authorize(req, res, next) {
   }
 
   req.user = payload;
-  next();
+  return next();
 }
 
 module.exports = {
