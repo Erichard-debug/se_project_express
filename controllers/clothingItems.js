@@ -1,5 +1,5 @@
 const clothingItems = require("../models/clothingItem");
-const { OK, CREATED, UNAUTHORIZED } = require("../utils/errors");
+const { OK, CREATED, FORBIDDEN } = require("../utils/errors");
 const { handleItemHttpError } = require("../utils/errorHandlers");
 
 function getItems(req, res) {
@@ -34,7 +34,7 @@ function deleteItem(req, res) {
     .then((item) => {
       if (String(item.owner) !== req.user._id) {
         return res
-          .status(UNAUTHORIZED)
+          .status(FORBIDDEN)
           .send({ message: "You are not authorized to delete this item" });
       }
       return item.deleteOne().then(() => res.send({ message: "Item deleted" }));
