@@ -17,14 +17,6 @@ mongoose.connect(
 const routes = require("./routes/index");
 
 app.use(express.json());
-
-// app.use((req, res, next) => {
-//   req.user = {
-//     _id: "650c8f6ded15aef466992a6d",
-//   };
-//   next();
-// });
-
 app.use(cors());
 app.use(routes);
 
