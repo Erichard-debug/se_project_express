@@ -2,6 +2,12 @@
 
 This is the back end for the WTWR application. It's a server responsible for handling http requests from SE Project React as well manipulating a database.
 
+# Domain Name
+
+api.expresswtwr.twilightparadox.com
+expresswtwr.twilightparadox.com
+www.expresswtwr.twilightparadox.com
+
 # Technologies Used
 
 Here are the technologies that are used to make up the application

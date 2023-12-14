@@ -71,27 +71,6 @@ function createUser(req, res) {
     });
 }
 
-// function getUsers(req, res) {
-//   User.findById(req.params.id)
-//     .orFail()
-//     .then((users) => {
-//       res.status(OK).send(users);
-//     })
-//     .catch((err) => {
-//       handleUserHttpError(req, res, err);
-//     });
-// }
-
-// function getUser(req, res) {
-//   User.findById(req.params.id)
-//     .orFail()
-//     .then((user) => {
-//       res.status(OK).send(user);
-//     })
-//     .catch((err) => {
-//       handleUserHttpError(req, res, err);
-//     });
-// }
 function getCurrentUser(req, res) {
   User.findById(req.user._id)
     .orFail()
@@ -119,8 +98,6 @@ function updateProfile(req, res) {
 
 module.exports = {
   createUser,
-  // getUsers,
-  // getUser,
   login,
   getCurrentUser,
   updateProfile,
