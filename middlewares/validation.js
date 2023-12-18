@@ -61,10 +61,6 @@ const validateUpdate = celebrate({
       "string.empty": 'The "avatar" field must be filled in',
       "string.uri": 'The "avatar" field must be a valid url',
     }),
-    email: Joi.string().required().email().messages({
-      "string.empty": 'The "email" field must be filled in',
-      "string.email": 'The "email" field must be a valid email',
-    }),
   }),
 });
 

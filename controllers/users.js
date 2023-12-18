@@ -24,33 +24,6 @@ function login(req, res, next) {
     .catch(() => next(new UnauthorizedError()));
 }
 
-// function createUser(req, res, next) {
-//   const { name, avatar, email, password } = req.body;
-
-//   if (!email) {
-//     return next(new BadRequestError());
-//   }
-
-//   User.findOne({ email }).then((existingUser) => {
-//     if (existingUser) {
-//       return next(new ConflictError("Email already exists."));
-//     }
-
-//     bcrypt.hash(password, 10).then((hash) => {
-//       User.create({ name, avatar, email, password: hash })
-//         .then((user) => {
-//           res.send({
-//             name: user.name,
-//             email: user.email,
-//             avatar: user.avatar,
-//           });
-//         })
-//         .catch((err) => {
-//           next(err);
-//         });
-//     });
-//   });
-// }
 const createUser = async (req, res, next) => {
   try {
     const { name, avatar, email, password } = req.body;
@@ -100,12 +73,14 @@ function updateProfile(req, res, next) {
     .orFail(() => new NotFoundError("Item not found."))
     .then((user) => {
       res.send({ user });
+    })
+    .catch((err) => {
+      if (err.name === "ValidationError") {
+        next(new BadRequestError("invalid data"));
+      } else {
+        next(err);
+      }
     });
-  if (err.name === "ValidationError") {
-    next(new BadRequestError("invalid data"));
-  } else {
-    next(err);
-  }
 }
 
 module.exports = {
